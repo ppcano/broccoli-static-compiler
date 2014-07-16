@@ -11,6 +11,16 @@ function StaticCompiler (inputTree, options) {
   if (!(this instanceof StaticCompiler)) return new StaticCompiler(inputTree, options)
   this.inputTree = inputTree
   this.options = options || {}
+  this.inputFiles = null
+}
+
+StaticCompiler.prototype.isUnchanged = function () {
+  var lastHash = this.inputFiles.hash,
+      baseDir = this.inputFiles.baseDir,
+      files = this.inputFiles.files;
+ 
+  var hash = helpers.hashStrings( getFileKeys(baseDir, files) );
+  return lastHash === hash;
 }
 
 StaticCompiler.prototype.write = function (readTree, destDir) {
@@ -35,6 +45,12 @@ StaticCompiler.prototype.write = function (readTree, destDir) {
 
         self._copy(fileSourcePath, fileDestPath)
       }
+
+      var hash = helpers.hashStrings( getFileKeys(baseDir, files) );
+      self.inputFiles = { baseDir: baseDir,
+                          files: files,
+                          hash: hash };
+
     }
   })
 }
@@ -49,4 +65,20 @@ StaticCompiler.prototype._copy = function (sourcePath, destPath) {
     mkdirp.sync(destDir)
   }
   helpers.symlinkOrCopyPreserveSync(sourcePath, destPath);
+}
+
+function getFileKeys (baseDir, files) {
+ 
+  var result = [],
+      length = files.length,
+      stats;
+  
+  for (var i = 0; i < length; i++) {
+    stats = fs.lstatSync(path.join(baseDir, files[i]));
+    result.push(stats.mode);
+    result.push(stats.size);
+    result.push(stats.mtime.getTime());
+  }
+ 
+  return result;
 }
