@@ -1,6 +1,13 @@
 # master
 
-* Use `symlinkOrCopyPreserveSync` from `broccoli-kitchen-sink-helpers` to use symlinks instead of copying.
+# 0.2.1
+
+* Fix regression in using a `destDir` of `/` (without an array if `file` globs). [#14](https://github.com/joliss/broccoli-static-compiler/pull/14)
+
+# 0.2.0
+
+* Use `node-symlink-or-copy` to use symlinks instead of copying when possible (see
+  [symlink-change.md](https://github.com/broccolijs/broccoli/blob/master/docs/symlink-change.md))
 
 # 0.1.4
 

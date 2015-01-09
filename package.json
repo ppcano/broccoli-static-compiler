@@ -1,7 +1,7 @@
 {
   "name": "broccoli-static-compiler",
   "description": "Broccoli compiler to copy static files",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "author": "Jo Liss <joliss42@gmail.com>",
   "main": "index.js",
   "license": "MIT",
@@ -14,8 +14,17 @@
     "files"
   ],
   "dependencies": {
-    "mkdirp": "^0.3.5",
+    "broccoli-kitchen-sink-helpers": "^0.2.5",
     "broccoli-writer": "^0.1.1",
-    "broccoli-kitchen-sink-helpers": "^0.2.3"
+    "mkdirp": "^0.5.0",
+    "symlink-or-copy": "^1.0.0"
+  },
+  "devDependencies": {
+    "broccoli": "^0.13.1",
+    "jshint": "^2.5.6",
+    "tap": "^0.4.13"
+  },
+  "scripts": {
+    "test": "jshint ./*.js test/*.js && tap --timeout 2 ./test/*_test.js"
   }
 }
